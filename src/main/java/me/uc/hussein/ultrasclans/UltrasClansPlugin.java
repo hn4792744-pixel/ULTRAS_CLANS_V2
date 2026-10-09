@@ -1,5 +1,6 @@
 package me.uc.hussein.ultrasclans;
 
+import java.io.File;
 import me.uc.hussein.ultrasclans.admin.AdminCommand;
 import me.uc.hussein.ultrasclans.admin.AdminGui;
 import me.uc.hussein.ultrasclans.placeholder.UltrasPlaceholderExpansion;
@@ -117,6 +118,12 @@ public final class UltrasClansPlugin extends JavaPlugin {
 
         this.messageManager = new MessageManager(this);
         messageManager.load();
+
+        File sqliteTempDir = new File(getDataFolder(), "sqlite-tmp");
+        if (!sqliteTempDir.exists() && !sqliteTempDir.mkdirs()) {
+            getLogger().warning("Could not create SQLite temporary directory: " + sqliteTempDir.getAbsolutePath());
+        }
+        System.setProperty("org.sqlite.tmpdir", sqliteTempDir.getAbsolutePath());
 
         this.databaseManager = new DatabaseManager(this);
         try {
